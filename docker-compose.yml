@@ -1,8 +1,11 @@
 version: "3"
 services:
   records:
-
-
+    image: docker.io/cybervagabond/csv_parser
+    container_name: csv_parser
+    depends_on:
+      - db
+      -
   db:
     image: postgres:latest
     container_name: postgres

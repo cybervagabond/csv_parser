@@ -9,7 +9,7 @@ COPY . .
 RUN GIT_COMMIT=$(git rev-list -1 HEAD) && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags "-s -w \
     -X github.com/cybervagabond/csv_parser/pkg/version.REVISION=${GIT_COMMIT}" \
-    -a -o bin/recordapp cmd/recordapp/*
+    -a -o bin/csv_parser cmd/csv_parser/*
 
 FROM alpine:latest
 
