@@ -5,10 +5,13 @@ import (
 	"log"
 )
 
+var (
+	csvfile = "./asset.csv"
+)
+
 func main() {
-	err := core.ReadCsvFile("./asset.csv")
+	err := core.ReadCsvFile(csvfile)
 	if err != nil {
 		log.Fatal("failed to parse csv document")
 	}
 }
-
