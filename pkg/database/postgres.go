@@ -26,6 +26,7 @@ func InsertRecords(records []models.Record) error {
 			}
 		}
 		if exists == false {
+			writeLog("created new record: " + record.RegNumber)
 			log.Println("creating new record: ", record)
 			queryInsert := fmt.Sprintf(`INSERT INTO records(reg_number, name, url, phone, mail)
  VALUES ('%s', '%s', '%s', '%s', '%s');`,
@@ -40,6 +41,7 @@ func InsertRecords(records []models.Record) error {
 				return err
 			}
 		} else {
+			writeLog("record with reg_number " + record.RegNumber + " already exists")
 			log.Printf("record with reg_number %s already exists", record.RegNumber)
 		}
 	}
