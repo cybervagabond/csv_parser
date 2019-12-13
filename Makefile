@@ -11,8 +11,7 @@ GIT_COMMIT:=$(shell git describe --dirty --always)
 VERSION:=$(shell grep 'VERSION' pkg/version/version.go | awk '{ print $$4 }' | tr -d '"')
 
 vendor:
-	export GOPRIVATE
-	go mod init gitlab.rdl-telecom.com/companion/back/simpay
+	go mod init github.com/cybervagabond/csv_parser
 	go mod vendor
 
 update-vendor:
@@ -26,13 +25,13 @@ commit:
 	git push -u origin master
 
 run:
-	GO111MODULE=on go run -ldflags "-s -w -X gitlab.rdl-telecom.com/companion/back/simpay/pkg/version.REVISION=$(GIT_COMMIT)" cmd/simpay/* --level=debug
+	GO111MODULE=on go run -ldflags "-s -w -X github.com/cybervagabond/csv_parser/pkg/version.REVISION=$(GIT_COMMIT)" cmd/simpay/* --level=debug
 
 test:
 	GO111MODULE=on go test -v -race ./...
 
 build:
-	GO111MODULE=on GIT_COMMIT=$$(git rev-list -1 HEAD) && GO111MODULE=on CGO_ENABLED=0 go build -mod=vendor  -ldflags "-s -w -X gitlab.rdl-telecom.com/companion/back/simpay/pkg/version.REVISION=$(GIT_COMMIT)" -a -o ./bin/simpay ./cmd/simpay/*
+	GO111MODULE=on GIT_COMMIT=$$(git rev-list -1 HEAD) && GO111MODULE=on CGO_ENABLED=0 go build -mod=vendor  -ldflags "-s -w -X github.com/cybervagabond/csv_parser/pkg/version.REVISION=$(GIT_COMMIT)" -a -o ./bin/simpay ./cmd/simpay/*
 
 build-container:
 	docker build -t $(DOCKER_IMAGE_NAME):$(VERSION) .
@@ -73,10 +72,6 @@ release:
 swagger:
 	GO111MODULE=on go get github.com/swaggo/swag/cmd/swag
 	cd pkg/api && $$(go env GOPATH)/bin/swag init -g server.go
-
-rmi-win:
-	@echo In Windows PowerShell
-	#	docker rmi $(docker images --format "{{.Repository}}:{{.Tag}}" | findstr "gitlab.rdl-telecom.com:4567/companion/back/simpay")
 
 rmi:
 	docker rmi $(docker images | grep $(DOCKER_IMAGE_NAME))
